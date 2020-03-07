@@ -71,6 +71,13 @@
         <div class="content mt-3">
 
             <div class="col-sm-12">
+                 <?php
+                            if(isset($_SESSION['msgNotPermission'])){
+                                echo $_SESSION['msgNotPermission'];
+                                unset($_SESSION['msgNotPermission']);
+                            };
+                        ?>
+                
                 <div class="alert  alert-success alert-dismissible fade show" role="alert">
                   <span class="badge badge-pill badge-success"> <font size="3px"> Olá <?php echo $_SESSION['nomeCompletoUsuario']; ?> -  <?php echo $_SESSION['idUsuario']; ?>
               </font></span>  
