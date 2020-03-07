@@ -36,6 +36,7 @@
 								$_SESSION['unidadeUsuario'] = $infoUsuario->id_unidade;
 								$_SESSION['autorizacaoFinanceira'] = $infoUsuario->aut_financeiro;
 								$_SESSION['allowPages'] = explode(";", $infoUsuario->allowPages);
+								$_SESSION['allowIndex'] = explode(";", $infoUsuario->allowIndex);
 
 								//LOG DE ACESSO AO SISTEMA
 								$ipLog = $_SERVER['REMOTE_ADDR'];
@@ -52,7 +53,7 @@
 
 								if($qtdRetornoAcesso >= 1){
 									$updatePrimeiroAcesso=$pdo->prepare("UPDATE funcionario SET primeiro_acesso_dia = NOW() WHERE id_funcionario=:idFuncionario");
-									$updatePrimeiroAcesso->bindValue(":idFuncionario", $_SESSION['idFuncionario']);
+									$updatePrimeiroAcesso->bindValue(":idFuncionario", $_SESSION['idUsuario']);
 								}else{
 
 								}

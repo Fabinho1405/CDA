@@ -3,8 +3,8 @@
    ob_start();
 
    if(!empty($_SESSION['idUsuario']) && in_array("Index", $_SESSION['allowPages'])){
-    //include_once("conection/conexao.php");
-    include_once("conection/connection.php");
+    include_once("connection/connection.php");
+    $pdo=conectar();
     include_once("phpFunctions/verificarSessao.php");
 ?>
 <!doctype html>
@@ -40,21 +40,20 @@
 </head>
 <body>
     <?php
-        include_once("includes/inc_menu.php");
+        include_once("includes/incMenus.php");
     ?>
     <div id="right-panel" class="right-panel">
 
         <!-- Header-->
         <?php
-            include_once("includes/inc_header.php");
+            include_once("includes/incHeader.php");
          ?>
         <!-- Header-->
-
         <div class="breadcrumbs">
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <font size="6px"> Àrea de Notificações</font>
+                        <font size="6px">Notificações</font>
                     </div>
                 </div>
             </div>
@@ -73,44 +72,20 @@
 
             <div class="col-sm-12">
                 <div class="alert  alert-success alert-dismissible fade show" role="alert">
-                  <span class="badge badge-pill badge-success"> <font size="3px"> Olá <?php echo $_SESSION['nome_funcionario']; ?> -  <?php echo $_SESSION['id_usuario']; ?>
+                  <span class="badge badge-pill badge-success"> <font size="3px"> Olá <?php echo $_SESSION['nomeCompletoUsuario']; ?> -  <?php echo $_SESSION['idUsuario']; ?>
               </font></span>  
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <?php
-                    if($_SESSION['menu_scouter_wts'] == 1 || $_SESSION['menu_scouter_insta'] || $_SESSION['menu_scouter_wts'] == 1 || $_SESSION['menu_scouter_face'] == 1){                
-                        include_once("includes/incIndexScouter.php");                
-                    }else{
-
-                    };
-                    if($_SESSION['menu_scouter_ligacao_new'] == 1){
-                        include_once("includes/incIndexScouterLigacao.php");
-                    }else{
-
-                    };
-                    if($_SESSION['menu_recepcao'] == 1){
-                        include_once("includes/incIndexRecepcao.php");
-                    }else{
-
-                    };
-                    if($_SESSION['menu_confirmacao'] == 1){
-                        include_once("includes/incIndexConfirmacao.php");
-                    }else{
-
-                    };
-                    if($_SESSION['menu_gerencia'] == 1){
-                        include_once("includes/incIndexGerenciaTele.php");
-                    }else{
-
-                    };
+                    //ALLOW INDEX
+                    if(in_array("totalCallSched", $_SESSION['allowIndex'])){
+                        echo "Autorizado total de agendamentos ligação";
+                    }
                     
                 ?>
                     </div>
-            <div class="col-sm-6 col-lg-3">         
-                
-            </div> 
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
 
