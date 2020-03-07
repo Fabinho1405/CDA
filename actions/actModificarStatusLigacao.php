@@ -16,14 +16,14 @@
 
 		if($select == 2){
 			$encaminhaAgendamento=$pdo->prepare("SELECT * FROM controle_ligacao WHERE id_controle = :idControle AND id_func = :idFunc");
-			$encaminhaAgendamento->bindValue(":idControle", $idControle);
-			$encaminhaAgendamento->bindValue(":idFunc", $idfuncionario);
+			$encaminhaAgendamento->bindValue(":idControle", $idcontrole);
+			$encaminhaAgendamento->bindValue(":idFunc", $usuario);
 			$encaminhaAgendamento->execute();
 			$qtdRetorno=$encaminhaAgendamento->rowCount();
 			if($qtdRetorno > 0){
 				$linhaAgenda=$encaminhaAgendamento->fetch(PDO::FETCH_OBJ);		
 
-				header("Location:../cadastrar_agendamento_ligacao.php?idcontrole=".$linhaAgenda->id_controle."&nomeresponsavel=".$linhaAgenda->nome_responsavel_controle."&nomemodelo=".$linhaAgenda->nome_modelo_controle."&telefoneprincipal=".$linhaAgenda->telefone_principal_controle."&telefonesecundario=".$linhaAgenda->telefone_secundario_controle);
+				header("Location:../cadastrarAgendamentoLigacao?idcontrole=".$linhaAgenda->id_controle."&nomeresponsavel=".$linhaAgenda->nome_responsavel_controle."&nomemodelo=".$linhaAgenda->nome_modelo_controle."&telefoneprincipal=".$linhaAgenda->telefone_principal_controle."&telefonesecundario=".$linhaAgenda->telefone_secundario_controle);
 			}else{
 				$_SESSION["msgRetornoLista"] = "<div class='alert alert-warning' role='alert'>
                                           <center> Esta ficha aparentemente não se encontra mais com você, fale com seu supervisor; </center>";
@@ -44,18 +44,15 @@
 	        $logFeedbackFicha->bindValue(":selecionado", $select);
 	        $logFeedbackFicha->execute();
 
-	        //PAREI AQUI, PROGRAMAR DEPOIS E NÃO ESQUECER DE NÃO FAZER MERDA. 
-	        //             SE HIDRATEM E NÃO USEM DROGAS
-	        //              \/ \/ \/ \/ \/ SEXTEI TODAH
+	        $updateFeedback=$pdo->prepare("UPDATE controle_ligacao SET ultimo_fedback = NOW(), qtd_feedback = :qtdFinal WHERE id_controle = :idControle");
+	        $updateFeedback->bindValue(":qtdFinal", $qtdFinalFeedback);
+	        $updateFeedback->bindValue(":idControle", $idcontrole);
+	        $updateFeedback->execute();
 
-	                                  
-
-	        $update_ultimo_fedback = "UPDATE controle_ligacao SET ultimo_fedback = NOW(), qtd_feedback = '$qtd_final_n_fedback' WHERE id_controle = '$idcontrole'";
-	        $exec_update_ultimo_fedback = mysqli_query($conn, $update_ultimo_fedback);
-	        header("Location: ../lista_telefonica.php");
+	        header("Location: ../listaTelefonica");
 
 		}else if($select == 5 || $select == 7){
-			header("Location:../motivo_ficha_si.php?idcontrole=$idcontrole");
+			header("Location:../motivoFichaSi?idcontrole=$idcontrole");
 			
 		}
 
