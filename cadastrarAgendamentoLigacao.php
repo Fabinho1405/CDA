@@ -91,9 +91,9 @@
                         <strong>Cadastro</strong> de Agendamento Ligação <small>Cadastre aqui seus agendamentos.</small>                 
                       </div>
                       <div class="card-body card-block">
-                        <form action="actions/act_cadastrar_agendamento_ligacao.php?<?php 
-                        if(!empty($_GET['idcontrole'])){echo "idficha=".$_GET['idcontrole'];}else{ }
-                        ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <form action="actions/actCadastrarAgendamentoLigacao.php<?php 
+                        if(!empty($_GET['idcontrole'])){echo "?idficha=".$_GET['idcontrole'];}else{ }
+                        ?>" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             <div class="row form-group">
                             <div class="col col-md-3"><label for="text-input" class=" form-control-label">Nome:<b><font color="red">*</font></b></labelcan></div>
                             <div class="col-12 col-md-9">                              
