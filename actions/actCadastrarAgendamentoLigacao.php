@@ -57,34 +57,34 @@
                         $_SESSION['msgcadLigacao'] = "<div class='alert alert-warning' role='alert'>Cliente já cadastrado em sua unidade em um período menor do estipulado. Entre em contato com o seu supervisor(a), apenas ele(a) poderá lhe ajudar. #14006</div>";
                         header("Location: ".$_SERVER['HTTP_REFERER']."");
                     }else{ 
-                        //Insere no LOG apenas de ligação que a ficha foi agendada
-                        $numeroFeedback=$pdo->prepare("SELECT * FROM controle_fb_ligacao WHERE id_ficha = :idFicha");
-                        $numeroFeedback->bindValue(":idFicha", $idficha);
-                        $numeroFeedback->execute();
-                        $qtdRetornoFeedback=$numeroFeedback->rowCount();
-                        $qtdFinalRetornoFeedback=$qtdRetornoFeedback + 1;
-                        
-                        $inserirLogAgendado=$pdo->prepare("INSERT controle_fb_ligacao(id_func, num_fedback, id_unidade, hora_ligacao, id_ficha,status) VALUES (:idFuncionario,:qtdFinalFeedback, :unidade, NOW(), :idFicha, 2)");
-                        $inserirLogAgendado->bindValue(":idFuncionario", $idfuncionario);
-                        $inserirLogAgendado->bindValue(":qtdFinalFeedback", $qtdFinalRetornoFeedback);
-                        $inserirLogAgendado->bindValue(":unidade", $unidade);
-                        $inserirLogAgendado->bindValue(":idFicha", $idficha);
-                        $inserirLogAgendado->execute();
+                            //Insere no LOG apenas de ligação que a ficha foi agendada
+                            $numeroFeedback=$pdo->prepare("SELECT * FROM controle_fb_ligacao WHERE id_ficha = :idFicha");
+                            $numeroFeedback->bindValue(":idFicha", $idficha);
+                            $numeroFeedback->execute();
+                            $qtdRetornoFeedback=$numeroFeedback->rowCount();
+                            $qtdFinalRetornoFeedback=$qtdRetornoFeedback + 1;
+                            
+                            $inserirLogAgendado=$pdo->prepare("INSERT controle_fb_ligacao(id_func, num_fedback, id_unidade, hora_ligacao, id_ficha,status) VALUES (:idFuncionario,:qtdFinalFeedback, :unidade, NOW(), :idFicha, 2)");
+                            $inserirLogAgendado->bindValue(":idFuncionario", $idfuncionario);
+                            $inserirLogAgendado->bindValue(":qtdFinalFeedback", $qtdFinalRetornoFeedback);
+                            $inserirLogAgendado->bindValue(":unidade", $unidade);
+                            $inserirLogAgendado->bindValue(":idFicha", $idficha);
+                            $inserirLogAgendado->execute();
 
-                        //Desabilitar Ficha do Sistema
-                        $desabilitaFicha=$pdo->prepare("UPDATE controle_ligacao SET id_status_sistema = 0, id_extracao = 1, id_func = '$idfuncionario', data_extracao = NOW(), ultimo_fedback = NOW(), qtd_feedback = :qtdFinalFeedback WHERE id_controle = :idFicha");
-                        $desabilitaFicha->bindValue(":qtdFinalFeedback", $qtdRetornoFeedback);
-                        $desabilitaFicha->bindValue(":idFicha", $idficha);
-                        $desabilitaFicha->execute();
+                            //Desabilitar Ficha do Sistema
+                            $desabilitaFicha=$pdo->prepare("UPDATE controle_ligacao SET id_status_sistema = 0, id_extracao = 1, id_func = '$idfuncionario', data_extracao = NOW(), ultimo_fedback = NOW(), qtd_feedback = :qtdFinalFeedback WHERE id_controle = :idFicha");
+                            $desabilitaFicha->bindValue(":qtdFinalFeedback", $qtdRetornoFeedback);
+                            $desabilitaFicha->bindValue(":idFicha", $idficha);
+                            $desabilitaFicha->execute();
 
-                        // Cadastrar o Cliente
-                        $insereCliente=$pdo->prepare("INSERT INTO cliente (nome_cliente, telefone_cliente,telefone2_cliente,idade_cliente,nome_responsavel_cliente, id_meio_captado, data_cadastro_cliente,id_func) VALUES (:nomeModelo,:telefonePrinc,:telefoneSec,:idade ,:nomeRespons,'3',NOW(),:idFuncionario)");
-                        $insereCliente->bindValue(":nomeModelo", $nome_modelo);
-                        $insereCliente->bindValue(":telefonePrinc", $telefone_principal);
-                        $insereCliente->bindValue(":telefoneSec", $telefonesecundario);
-                        $insereCliente->bindValue(":idade", $idade);
-                        $insereCliente->bindValue(":nomeRespons", $nome_responsavel);
-                        $insereCliente->bindValue(":idFuncionario", $idfuncionario);
+                            // Cadastrar o Cliente
+                            $insereCliente=$pdo->prepare("INSERT INTO cliente (nome_cliente, telefone_cliente,telefone2_cliente,idade_cliente,nome_responsavel_cliente, id_meio_captado, data_cadastro_cliente,id_func) VALUES (:nomeModelo,:telefonePrinc,:telefoneSec,:idade ,:nomeRespons,'3',NOW(),:idFuncionario)");
+                            $insereCliente->bindValue(":nomeModelo", $nome_modelo);
+                            $insereCliente->bindValue(":telefonePrinc", $telefone_principal);
+                            $insereCliente->bindValue(":telefoneSec", $telefonesecundario);
+                            $insereCliente->bindValue(":idade", $idade);
+                            $insereCliente->bindValue(":nomeRespons", $nome_responsavel);
+                            $insereCliente->bindValue(":idFuncionario", $idfuncionario);
                         
                         if($insereCliente->execute()){                            
                             // Procurar Novo Cliente
@@ -135,7 +135,6 @@
                 $_SESSION['msgcadLigacao'] = "<div class='alert alert-info' role='alert'>
                                             Temporariamente, os agendamentos aos domingos estão suspensos.
                              </div>";
-                             echo $diasemanaNumber;
                 header("Location: ".$_SERVER['HTTP_REFERER']."");
 
             }
