@@ -27,6 +27,13 @@
 			}else{
 				$_SESSION["msgRetornoLista"] = "<div class='alert alert-warning' role='alert'>
                                           <center> Esta ficha aparentemente não se encontra mais com você, fale com seu supervisor; </center>";
+                //LOG                                   
+                            $ip_log = $_SERVER['REMOTE_ADDR'];
+                            $idfuncionario = $_SESSION['idUsuario'];
+                            $insereLog=$pdo->prepare("INSERT INTO logs (datetime_log, ip_user, mensagem_log, tipo_log, id_func) VALUES (NOW(), :ipLog, 'O usuario tentou seguir para tela de agendamento, com uma ficha que nao ertence mais a ele', 'PERIGO', :idFuncionario)");
+                            $insereLog->bindValue(":ipLog", $ip_log);
+                            $insereLog->bindValue(":idFuncionario", $idfuncionario);
+                            $insereLog->execute();
                 header("Location: ../listaTelefonica");
 			}
 		}else if($select == 3 || $select == 4 || $select == 6 || $select == 8 || $select == 5 || $select == 9){
@@ -43,6 +50,14 @@
 	        $logFeedbackFicha->bindValue(":idControle", $idcontrole);
 	        $logFeedbackFicha->bindValue(":selecionado", $select);
 	        $logFeedbackFicha->execute();
+
+	        //LOG                                   
+                            $ip_log = $_SERVER['REMOTE_ADDR'];
+                            $idfuncionario = $_SESSION['idUsuario'];
+                            $insereLog=$pdo->prepare("INSERT INTO logs (datetime_log, ip_user, mensagem_log, tipo_log, id_func) VALUES (NOW(), :ipLog, 'O usuario deu um Feedback. || FICH: $idcontrole', 'ALERTA', :idFuncionario)");
+                            $insereLog->bindValue(":ipLog", $ip_log);
+                            $insereLog->bindValue(":idFuncionario", $idfuncionario);
+                            $insereLog->execute();
 
 	        $updateFeedback=$pdo->prepare("UPDATE controle_ligacao SET ultimo_fedback = NOW(), qtd_feedback = :qtdFinal WHERE id_controle = :idControle");
 	        $updateFeedback->bindValue(":qtdFinal", $qtdFinalFeedback);

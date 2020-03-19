@@ -122,6 +122,13 @@
                             $_SESSION['msgcadLigacao'] = "<div class='alert alert-info' role='alert'>
                                             Erro ao adicionar o cliente, entre em contato com seu supervisor.
                              </div>";
+                             //LOG                                   
+                            $ip_log = $_SERVER['REMOTE_ADDR'];
+                            $idfuncionario = $_SESSION['idUsuario'];
+                            $insereLog=$pdo->prepare("INSERT INTO logs (datetime_log, ip_user, mensagem_log, tipo_log, id_func) VALUES (NOW(), :ipLog, 'Ocorreu um erro ao inserir um agendamento', 'ALERTA', :idFuncionario)");
+                            $insereLog->bindValue(":ipLog", $ip_log);
+                            $insereLog->bindValue(":idFuncionario", $idfuncionario);
+                            $insereLog->execute();
                             header("Location: ".$_SERVER['HTTP_REFERER']."");
                         }
                     }
@@ -129,12 +136,26 @@
                     $_SESSION['msgcadLigacao'] = "<div class='alert alert-info' role='alert'>
                                             O horário do seu agendamento está fora do horário de funcionamento da Agência. Entre em contato com seu supervisor para mais detalhes.
                              </div>";
+                    //LOG                                   
+                            $ip_log = $_SERVER['REMOTE_ADDR'];
+                            $idfuncionario = $_SESSION['idUsuario'];
+                            $insereLog=$pdo->prepare("INSERT INTO logs (datetime_log, ip_user, mensagem_log, tipo_log, id_func) VALUES (NOW(), :ipLog, 'Usuario tentou agendar um cliente fora do horario permitido', 'ALERTA', :idFuncionario)");
+                            $insereLog->bindValue(":ipLog", $ip_log);
+                            $insereLog->bindValue(":idFuncionario", $idfuncionario);
+                            $insereLog->execute();
                             header("Location: ".$_SERVER['HTTP_REFERER']."");
                 }
             }else{
                 $_SESSION['msgcadLigacao'] = "<div class='alert alert-info' role='alert'>
                                             Temporariamente, os agendamentos aos domingos estão suspensos.
                              </div>";
+                //LOG                                   
+                            $ip_log = $_SERVER['REMOTE_ADDR'];
+                            $idfuncionario = $_SESSION['idUsuario'];
+                            $insereLog=$pdo->prepare("INSERT INTO logs (datetime_log, ip_user, mensagem_log, tipo_log, id_func) VALUES (NOW(), :ipLog, 'Usuario tentou inserir um cliente em dia de domingo', 'ALERTA', :idFuncionario)");
+                            $insereLog->bindValue(":ipLog", $ip_log);
+                            $insereLog->bindValue(":idFuncionario", $idfuncionario);
+                            $insereLog->execute();
                 header("Location: ".$_SERVER['HTTP_REFERER']."");
 
             }
@@ -142,13 +163,26 @@
             $_SESSION['msgcadLigacao'] = "<div class='alert alert-info' role='alert'>
                                             A data do agendamento, não pode ser anterior a sua data atual.
                              </div>";          
-            
+            //LOG                                   
+                            $ip_log = $_SERVER['REMOTE_ADDR'];
+                            $idfuncionario = $_SESSION['idUsuario'];
+                            $insereLog=$pdo->prepare("INSERT INTO logs (datetime_log, ip_user, mensagem_log, tipo_log, id_func) VALUES (NOW(), :ipLog, 'Usuario tentou inserir um agendamento em uma data antecedente a atual;', 'ALERTA', :idFuncionario)");
+                            $insereLog->bindValue(":ipLog", $ip_log);
+                            $insereLog->bindValue(":idFuncionario", $idfuncionario);
+                            $insereLog->execute();
             header("Location: ".$_SERVER['HTTP_REFERER']."");
         }
     }else{
         $_SESSION['msgNotPermission'] = "<div class='alert alert-info' role='alert'>
                                             Você Não Tem Permissão de Acesso!
                              </div>";
+        //LOG                                   
+                            $ip_log = $_SERVER['REMOTE_ADDR'];
+                            $idfuncionario = $_SESSION['idUsuario'];
+                            $insereLog=$pdo->prepare("INSERT INTO logs (datetime_log, ip_user, mensagem_log, tipo_log, id_func) VALUES (NOW(), :ipLog, 'Usuario tentou acessar pagina NÃO PERMITIDA', 'PERIGO', :idFuncionario)");
+                            $insereLog->bindValue(":ipLog", $ip_log);
+                            $insereLog->bindValue(":idFuncionario", $idfuncionario);
+                            $insereLog->execute();
         header("Location: ../index");
 
     }
